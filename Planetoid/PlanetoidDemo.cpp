@@ -20,6 +20,8 @@ void PlanetoidDemo::InitializePhysics() {
 	m_pSolver = new btSequentialImpulseConstraintSolver();
 	// create the world
 	m_pWorld = new btDiscreteDynamicsWorld(m_pDispatcher, m_pBroadphase, m_pSolver, m_pCollisionConfiguration);
+	// disable gravity
+	m_pWorld->setGravity(btVector3(0.0, 0.0, 0.0));
 
 	// create our scene's physics objects
 	CreateObjects();
@@ -56,6 +58,15 @@ void PlanetoidDemo::CreateObjects() {
 	m_pTrigger->setCollisionFlags(btCollisionObject::CF_NO_CONTACT_RESPONSE);
 	// add the trigger to our world
 	m_pWorld->addCollisionObject(m_pTrigger);
+
+	for (btScalar x_val = 0.0f; x_val < 100.0f; x_val += 10.0f) {
+		for (btScalar y_val = 0.0f; y_val < 100.00; y_val += 10.0f) {
+			for (btScalar z_val = 0.0f; z_val < 100.00f; z_val += 10.0f) {
+				// create a yellow sphere
+				CreateGameObject(new btSphereShape(1.0f), 10.0, btVector3(0.7f, 0.7f, 0.0f), btVector3(x_val, y_val, z_val));
+			}
+		}
+	}
 }
 
 void PlanetoidDemo::CollisionEvent(btRigidBody* pBody0, btRigidBody* pBody1) {
