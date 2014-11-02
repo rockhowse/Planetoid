@@ -37,13 +37,13 @@ void PlanetoidDemo::ShutdownPhysics() {
 
 void PlanetoidDemo::CreateObjects() {
 	// create a ground plane
-	CreateGameObject(new btBoxShape(btVector3(1,50,50)), 0, btVector3(0.2f, 0.6f, 0.6f), btVector3(0.0f, 0.0f, 0.0f));
+	//CreateGameObject(new btBoxShape(btVector3(1,50,50)), 0, btVector3(0.2f, 0.6f, 0.6f), btVector3(0.0f, 0.0f, 0.0f));
 
 	// create our red box, but store the pointer for future usage
-	m_pBox = CreateGameObject(new btBoxShape(btVector3(1,1,1)), 1.0, btVector3(1.0f, 0.2f, 0.2f), btVector3(0.0f, 10.0f, 0.0f));
+	//m_pBox = CreateGameObject(new btBoxShape(btVector3(1,1,1)), 1.0, btVector3(1.0f, 0.2f, 0.2f), btVector3(0.0f, 10.0f, 0.0f));
 
 	// create a second box
-	CreateGameObject(new btBoxShape(btVector3(1,1,1)), 1.0, btVector3(0.0f, 0.2f, 0.8f), btVector3(1.25f, 20.0f, 0.0f));
+	//CreateGameObject(new btBoxShape(btVector3(1,1,1)), 1.0, btVector3(0.0f, 0.2f, 0.8f), btVector3(1.25f, 20.0f, 0.0f));
 
 	// create a trigger volume
 	m_pTrigger = new btCollisionObject();
@@ -59,11 +59,11 @@ void PlanetoidDemo::CreateObjects() {
 	// add the trigger to our world
 	m_pWorld->addCollisionObject(m_pTrigger);
 
-	for (btScalar x_val = 0.0f; x_val < 100.0f; x_val += 10.0f) {
-		for (btScalar y_val = 0.0f; y_val < 100.00; y_val += 10.0f) {
-			for (btScalar z_val = 0.0f; z_val < 100.00f; z_val += 10.0f) {
+	for (btScalar x_val = 0.0f; x_val < 10.0f; x_val += 1.0f) {
+		for (btScalar y_val = 0.0f; y_val < 10.00; y_val += 1.0f) {
+			for (btScalar z_val = 0.0f; z_val < 10.00f; z_val += 1.0f) {
 				// create a yellow sphere
-				CreateGameObject(new btSphereShape(1.0f), 10.0, btVector3(0.7f, 0.7f, 0.0f), btVector3(x_val, y_val, z_val));
+				CreateGameObject(new btSphereShape(1.0f), 1.0f, btVector3(0.7f, 0.7f, 0.0f), btVector3(x_val, y_val, z_val));
 			}
 		}
 	}
@@ -71,8 +71,9 @@ void PlanetoidDemo::CreateObjects() {
 
 void PlanetoidDemo::CollisionEvent(btRigidBody* pBody0, btRigidBody* pBody1) {
 	// did the box collide with the trigger?
-	if (pBody0 == m_pBox->GetRigidBody() && pBody1 == m_pTrigger ||
-		pBody1 == m_pBox->GetRigidBody() && pBody0 == m_pTrigger) {
+	if (m_pBox && 
+		(pBody0 == m_pBox->GetRigidBody() && pBody1 == m_pTrigger ||
+		 pBody1 == m_pBox->GetRigidBody() && pBody0 == m_pTrigger)) {
 			// if yes, create a big green box nearby
 			CreateGameObject(new btBoxShape(btVector3(2,2,2)), 2.0, btVector3(0.3, 0.7, 0.3), btVector3(5, 10, 0));
 	}
@@ -107,6 +108,9 @@ void PlanetoidDemo::CollisionEvent(btRigidBody* pBody0, btRigidBody* pBody1) {
 		// Force testing
 		case 'g': 
 			{
+			if (!m_pBox)
+				return;
+
 				// if 'g' is held down, apply a force
 				m_bApplyForce = true; 
 				// prevent the box from deactivating
@@ -123,7 +127,7 @@ void PlanetoidDemo::CollisionEvent(btRigidBody* pBody0, btRigidBody* pBody1) {
 				m_bCanExplode = false;
 				// create a collision object for our explosion
 				m_pExplosion = new btCollisionObject();
-				m_pExplosion->setCollisionShape(new btSphereShape(3.0f));
+				m_pExplosion->setCollisionShape(new btSphereShape(5.0f));
 				// get the position that we clicked
 				RayResult result;
 				Raycast(m_cameraPosition, GetPickingRay(x, y), result, true);
@@ -149,6 +153,9 @@ void PlanetoidDemo::CollisionEvent(btRigidBody* pBody0, btRigidBody* pBody1) {
 		// Force testing
 		case 'g': 
 			{
+				if (!m_pBox)
+					return;
+
 				// if 'g' is let go, stop applying the force
 				m_bApplyForce = false; 
 				// allow the object to deactivate again
@@ -166,7 +173,8 @@ void PlanetoidDemo::CollisionEvent(btRigidBody* pBody0, btRigidBody* pBody1) {
 
 		// Force testing
 		if (m_bApplyForce) {
-			if (!m_pBox) return;
+			if (!m_pBox) 
+				return;
 			// apply a central upwards force that exceeds gravity
 			m_pBox->GetRigidBody()->applyCentralForce(btVector3(0, 20, 0));
 		}
