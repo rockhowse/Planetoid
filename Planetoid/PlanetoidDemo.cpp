@@ -105,8 +105,8 @@ void PlanetoidDemo::CollisionEvent(btRigidBody* pBody0, btRigidBody* pBody1) {
 		// call the base implementation first
 		BulletOpenGLApplication::Keyboard(key, x, y);
 		switch(key) {
-		// Force testing
-		case 'g': 
+			// Force testing
+			case 'g': 
 			{
 			if (!m_pBox)
 				return;
@@ -117,8 +117,8 @@ void PlanetoidDemo::CollisionEvent(btRigidBody* pBody0, btRigidBody* pBody1) {
 				m_pBox->GetRigidBody()->setActivationState(DISABLE_DEACTIVATION);
 				break;
 			}
-		// Impulse testing
-		case 'e':
+			// Impulse testing
+			case 'e':
 			{
 				// don't create a new explosion if one already exists
 				// or we haven't released the key, yet

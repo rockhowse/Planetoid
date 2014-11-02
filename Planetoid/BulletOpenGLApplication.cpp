@@ -77,31 +77,40 @@ void BulletOpenGLApplication::Initialize() {
 void BulletOpenGLApplication::Keyboard(unsigned char key, int x, int y) {
 	// This function is called by FreeGLUT whenever
 	// generic keys are pressed down.
-	switch(key) {
-		// 'z' zooms in
-	case 'z': ZoomCamera(+CAMERA_STEP_SIZE); break;
-		// 'x' zoom out
-	case 'x': ZoomCamera(-CAMERA_STEP_SIZE); break;
-	case 'w':
-		// toggle wireframe debug drawing
-		m_pDebugDrawer->ToggleDebugFlag(btIDebugDraw::DBG_DrawWireframe);
-		break;
-
-	case 'b':
-		// toggle AABB debug drawing
-		m_pDebugDrawer->ToggleDebugFlag(btIDebugDraw::DBG_DrawAabb);
-		break;
- 	case 'd':
- 		{
- 			// create a temp object to store the raycast result
- 			RayResult result;
- 			// perform the raycast
- 			if (!Raycast(m_cameraPosition, GetPickingRay(x, y), result))
- 				return; // return if the test failed
- 			// destroy the corresponding game object
- 			DestroyGameObject(result.pBody);
- 			break;
- 		}
+	switch (key) {
+		// 'w' zooms in
+		case 'w':
+			ZoomCamera(+CAMERA_STEP_SIZE);
+			break;
+		// 's' zoom out
+		case 's':
+			ZoomCamera(-CAMERA_STEP_SIZE); 
+			break;
+		case 'a':
+			RotateCamera(m_cameraYaw, +CAMERA_STEP_SIZE); 
+			break;
+		case 'd':
+			RotateCamera(m_cameraYaw, -CAMERA_STEP_SIZE); 
+			break;
+		case 'f':
+			// toggle wireframe debug drawing
+			m_pDebugDrawer->ToggleDebugFlag(btIDebugDraw::DBG_DrawWireframe);
+			break;
+		case 'b':
+			// toggle AABB debug drawing
+			m_pDebugDrawer->ToggleDebugFlag(btIDebugDraw::DBG_DrawAabb);
+			break;
+		case 'r':
+		{
+			// create a temp object to store the raycast result
+			RayResult result;
+			// perform the raycast
+			if (!Raycast(m_cameraPosition, GetPickingRay(x, y), result))
+				return; // return if the test failed
+			// destroy the corresponding game object
+			DestroyGameObject(result.pBody);
+			break;
+		}
 	}
 }
 
@@ -111,15 +120,15 @@ void BulletOpenGLApplication::Special(int key, int x, int y) {
 	// This function is called by FreeGLUT whenever special keys
 	// are pressed down, like the arrow keys, or Insert, Delete etc.
 	switch(key) {
-		// the arrow keys rotate the camera up/down/left/right
-	case GLUT_KEY_LEFT: 
-		RotateCamera(m_cameraYaw, +CAMERA_STEP_SIZE); break;
-	case GLUT_KEY_RIGHT:
-		RotateCamera(m_cameraYaw, -CAMERA_STEP_SIZE); break;
-	case GLUT_KEY_UP:	
-		RotateCamera(m_cameraPitch, +CAMERA_STEP_SIZE); break;
-	case GLUT_KEY_DOWN:	
-		RotateCamera(m_cameraPitch, -CAMERA_STEP_SIZE); break;
+			// the arrow keys rotate the camera up/down/left/right
+		case GLUT_KEY_LEFT: 
+			RotateCamera(m_cameraYaw, +CAMERA_STEP_SIZE); break;
+		case GLUT_KEY_RIGHT:
+			RotateCamera(m_cameraYaw, -CAMERA_STEP_SIZE); break;
+		case GLUT_KEY_UP:	
+			RotateCamera(m_cameraPitch, +CAMERA_STEP_SIZE); break;
+		case GLUT_KEY_DOWN:	
+			RotateCamera(m_cameraPitch, -CAMERA_STEP_SIZE); break;
 	}
 }
 
