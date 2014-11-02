@@ -6,9 +6,9 @@
 // global pointer to our application object
 static BulletOpenGLApplication* g_pApp;
 
-// Various static functions that will be handed to FreeGLUT to be called
-// during various events (our callbacks). Each calls an equivalent function
-// in our (global) application object.
+/** Various static functions that will be handed to FreeGLUT to be called
+	during various events (our callbacks). Each calls an equivalent function
+	in our (global) application object. **/
 static void KeyboardCallback(unsigned char key, int x, int y) {
 	g_pApp->Keyboard(key, x, y);
 }
@@ -30,7 +30,7 @@ static void IdleCallback() {
 static void MouseCallback(int button, int state, int x, int y) {
 	g_pApp->Mouse(button, state, x, y);
 }
-static void MotionCallback(int x, int y) {
+static void MotionCallback(int x,int y) {
 	g_pApp->Motion(x, y);
 }
 static void DisplayCallback(void) {
@@ -40,21 +40,21 @@ static void DisplayCallback(void) {
 // our custom-built 'main' function, which accepts a reference to a 
 // BulletOpenGLApplication object.
 int glutmain(int argc, char **argv, int width, int height, const char* title, BulletOpenGLApplication* pApp) {
-	// store the application object so we can
+    // store the application object so we can
 	// access it globally
 	g_pApp = pApp;
-	
+
 	// initialize the window
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
 	glutInitWindowPosition(0, 0);
 	glutInitWindowSize(width, height);
 	glutCreateWindow(title);
-	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS);
-	
+	glutSetOption (GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS);
+
 	// perform custom initialization our of application
 	g_pApp->Initialize();
-	
+
 	// give our static
 	glutKeyboardFunc(KeyboardCallback);
 	glutKeyboardUpFunc(KeyboardUpCallback);
@@ -65,8 +65,8 @@ int glutmain(int argc, char **argv, int width, int height, const char* title, Bu
 	glutMouseFunc(MouseCallback);
 	glutPassiveMotionFunc(MotionCallback);
 	glutMotionFunc(MotionCallback);
-	glutDisplayFunc(DisplayCallback);
-	
+	glutDisplayFunc(DisplayCallback );
+
 	// perform one render before we launch the application
 	g_pApp->Idle();
 	

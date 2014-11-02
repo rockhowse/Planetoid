@@ -2,12 +2,12 @@
 //
 
 #include "stdafx.h"
-#include "BulletOpenGLApplication.h"
+#include "PlanetoidDemo.h"
 #include "FreeGLUTCallbacks.h"
 
 int main(int argc, char* argv[])
 {
-	BulletOpenGLApplication demo;
-	return glutmain(argc, argv, 1024, 768, "Introduction to Game Physics with Bullet Physics and OpenGL", &demo);
+	PlanetoidDemo demo;
+	return glutmain(argc, argv, 1024, 768, "Planetoid Demo", &demo);
 }
 
