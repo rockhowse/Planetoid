@@ -32,7 +32,7 @@ struct RayResult {
  	btVector3 hitPoint;
 };
 
-const btScalar gWorldRadius(10);
+const btScalar gWorldRadius(1);
 const btVector3 gWorldCenter(0, -gWorldRadius, 0);
 
 class BulletOpenGLApplication {

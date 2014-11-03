@@ -39,7 +39,7 @@ void PlanetoidDemo::CreateObjects() {
 	//CreateGameObject(new btBoxShape(btVector3(1,50,50)), 0, btVector3(0.2f, 0.6f, 0.6f), btVector3(0.0f, 0.0f, 0.0f));
 
 	// create our red box, but store the pointer for future usage
-	//m_pBox = CreateGameObject(new btBoxShape(btVector3(1,1,1)), 1.0, btVector3(1.0f, 0.2f, 0.2f), btVector3(0.0f, 10.0f, 0.0f));
+	m_pBox = CreateGameObject(new btBoxShape(btVector3(1,1,1)), 1.0, btVector3(1.0f, 0.2f, 0.2f), btVector3(0.0f, 10.0f, 0.0f));
 
 	// create a second box
 	//CreateGameObject(new btBoxShape(btVector3(1,1,1)), 1.0, btVector3(0.0f, 0.2f, 0.8f), btVector3(1.25f, 20.0f, 0.0f));
@@ -58,9 +58,12 @@ void PlanetoidDemo::CreateObjects() {
 	// add the trigger to our world
 	m_pWorld->addCollisionObject(m_pTrigger);
 
-	for (btScalar x_val = 0.0f; x_val < 6.0f; x_val += 1.5f) {
-		for (btScalar y_val = 0.0f; y_val < 6.00; y_val += 1.5f) {
-			for (btScalar z_val = 0.0f; z_val < 6.00f; z_val += 1.5f) {
+	btScalar cube_size = 12.0f;
+	CreateGameObject(new btSphereShape(1.0f), 10.0f, btVector3(1.0f, 0.0f, 0.0f), btVector3(0.0, 0.0, 0.0));
+
+	for (btScalar x_val = 0.0f; x_val < cube_size; x_val += 1.5f) {
+		for (btScalar y_val = 0.0f; y_val < cube_size; y_val += 1.5f) {
+			for (btScalar z_val = 0.0f; z_val < cube_size; z_val += 1.5f) {
 				// create a yellow sphere
 				CreateGameObject(new btSphereShape(1.0f), 10.0f, btVector3(0.7f, 0.7f, 0.0f), btVector3(x_val, y_val, z_val));
 			}
