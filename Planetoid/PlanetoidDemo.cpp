@@ -1,11 +1,10 @@
 #include "PlanetoidDemo.h"
 
-PlanetoidDemo::PlanetoidDemo()
-:
+PlanetoidDemo::PlanetoidDemo():
 	BulletOpenGLApplication(),
-m_bApplyForce(false),
 	m_pExplosion(0),
-m_bCanExplode(true) {
+	m_bCanExplode(true) 
+{
 
 }
 
@@ -59,11 +58,11 @@ void PlanetoidDemo::CreateObjects() {
 	// add the trigger to our world
 	m_pWorld->addCollisionObject(m_pTrigger);
 
-	for (btScalar x_val = 0.0f; x_val < 10.0f; x_val += 1.0f) {
-		for (btScalar y_val = 0.0f; y_val < 10.00; y_val += 1.0f) {
-			for (btScalar z_val = 0.0f; z_val < 10.00f; z_val += 1.0f) {
+	for (btScalar x_val = 0.0f; x_val < 6.0f; x_val += 1.5f) {
+		for (btScalar y_val = 0.0f; y_val < 6.00; y_val += 1.5f) {
+			for (btScalar z_val = 0.0f; z_val < 6.00f; z_val += 1.5f) {
 				// create a yellow sphere
-				CreateGameObject(new btSphereShape(1.0f), 1.0f, btVector3(0.7f, 0.7f, 0.0f), btVector3(x_val, y_val, z_val));
+				CreateGameObject(new btSphereShape(1.0f), 10.0f, btVector3(0.7f, 0.7f, 0.0f), btVector3(x_val, y_val, z_val));
 			}
 		}
 	}
@@ -71,12 +70,12 @@ void PlanetoidDemo::CreateObjects() {
 
 void PlanetoidDemo::CollisionEvent(btRigidBody* pBody0, btRigidBody* pBody1) {
 	// did the box collide with the trigger?
-	if (m_pBox && 
+	/*if (m_pBox && 
 		(pBody0 == m_pBox->GetRigidBody() && pBody1 == m_pTrigger ||
 		 pBody1 == m_pBox->GetRigidBody() && pBody0 == m_pTrigger)) {
 			// if yes, create a big green box nearby
 			CreateGameObject(new btBoxShape(btVector3(2,2,2)), 2.0, btVector3(0.3, 0.7, 0.3), btVector3(5, 10, 0));
-	}
+	}*/
 
 		// Impulse testing
 	if (pBody0 == m_pExplosion || pBody1 == m_pExplosion) {
@@ -105,18 +104,6 @@ void PlanetoidDemo::CollisionEvent(btRigidBody* pBody0, btRigidBody* pBody1) {
 		// call the base implementation first
 		BulletOpenGLApplication::Keyboard(key, x, y);
 		switch(key) {
-			// Force testing
-			case 'g': 
-			{
-			if (!m_pBox)
-				return;
-
-				// if 'g' is held down, apply a force
-				m_bApplyForce = true; 
-				// prevent the box from deactivating
-				m_pBox->GetRigidBody()->setActivationState(DISABLE_DEACTIVATION);
-				break;
-			}
 			// Impulse testing
 			case 'e':
 			{
@@ -153,13 +140,8 @@ void PlanetoidDemo::CollisionEvent(btRigidBody* pBody0, btRigidBody* pBody1) {
 		// Force testing
 		case 'g': 
 			{
-				if (!m_pBox)
-					return;
-
-				// if 'g' is let go, stop applying the force
-				m_bApplyForce = false; 
-				// allow the object to deactivate again
-				m_pBox->GetRigidBody()->forceActivationState(ACTIVE_TAG); 
+				// enable gravity
+				m_bEnableGravity = !m_bEnableGravity;
 				break;
 			}
 		// Impulse testing
@@ -170,14 +152,6 @@ void PlanetoidDemo::CollisionEvent(btRigidBody* pBody0, btRigidBody* pBody1) {
 	void PlanetoidDemo::UpdateScene(float dt) {
 		// call the base implementation first
 		BulletOpenGLApplication::UpdateScene(dt);
-
-		// Force testing
-		if (m_bApplyForce) {
-			if (!m_pBox) 
-				return;
-			// apply a central upwards force that exceeds gravity
-			m_pBox->GetRigidBody()->applyCentralForce(btVector3(0, 20, 0));
-		}
 
 		// Impulse testing
 		if (m_pExplosion) {

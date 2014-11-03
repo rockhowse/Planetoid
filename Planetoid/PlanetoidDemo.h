@@ -25,10 +25,7 @@ protected:
 	// a simple trigger volume
 	btCollisionObject* m_pTrigger;
 
-		// keeps track of whether we're holding down the 'g' key
-		bool m_bApplyForce;
-
-		// explosion variables
-		btCollisionObject* m_pExplosion;
-		bool m_bCanExplode;
+	// explosion variables
+	btCollisionObject* m_pExplosion;
+	GLboolean m_bCanExplode;
 };

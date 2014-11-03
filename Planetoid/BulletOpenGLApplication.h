@@ -32,6 +32,9 @@ struct RayResult {
  	btVector3 hitPoint;
 };
 
+const btScalar gWorldRadius(10);
+const btVector3 gWorldCenter(0, -gWorldRadius, 0);
+
 class BulletOpenGLApplication {
 public:
 	BulletOpenGLApplication();
@@ -93,6 +96,9 @@ public:
 	virtual void CollisionEvent(btRigidBody* pBody0, btRigidBody * pBody1);
 	virtual void SeparationEvent(btRigidBody * pBody0, btRigidBody * pBody1);
 
+	// gravity updates
+	void UpdateGravityField();
+
 protected:
 	// camera control
 	btVector3 m_cameraPosition; // the camera's current position
@@ -130,5 +136,8 @@ protected:
 
 	// collision event variables
 	CollisionPairs m_pairsLastUpdate;
+
+	// keeps track of whether we're holding down the 'g' key
+	GLboolean m_bEnableGravity;
 };
 #endif

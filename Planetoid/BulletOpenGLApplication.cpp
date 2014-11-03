@@ -20,7 +20,8 @@ m_pDispatcher(0),
 m_pSolver(0),
 m_pWorld(0),
 m_pPickedBody(0),
-m_pPickConstraint(0)
+m_pPickConstraint(0),
+m_bEnableGravity(false)
 {
 }
 
@@ -410,6 +411,9 @@ void BulletOpenGLApplication::UpdateScene(float dt) {
 
 		// check for any new collisions/separations
 		CheckForCollisionEvents();
+
+		// update gravity field
+		UpdateGravityField();
 	}
 }
 
@@ -655,6 +659,24 @@ void BulletOpenGLApplication::RemovePickingConstraint() {
 	// clear the pointers
 	m_pPickConstraint = 0;
 	m_pPickedBody = 0;
+}
+
+void BulletOpenGLApplication::UpdateGravityField() {
+	// if gravity has been enabled, apply it
+	if (m_bEnableGravity) {
+
+		// go through all colidable objects and apply gravitational force towards the center of the world
+		for (int i = 0, sz = m_pWorld->getCollisionObjectArray().size(); i<sz; i++) {
+			btCollisionObject* co = m_pWorld->getCollisionObjectArray()[i];
+			if (co && !co->isStaticOrKinematicObject() && co->getActivationState() == ACTIVE_TAG) {
+				btRigidBody* rb = btRigidBody::upcast(co);
+				if (rb) {
+					const btVector3 gravity = ((gWorldCenter - rb->getWorldTransform().getOrigin()).normalized()*btScalar(9.81*9.81));
+					rb->setGravity(gravity);
+				}
+			}
+		}
+	}
 }
 
 void BulletOpenGLApplication::CheckForCollisionEvents() {
