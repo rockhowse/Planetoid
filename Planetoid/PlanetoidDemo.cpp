@@ -61,9 +61,13 @@ void PlanetoidDemo::CreateObjects() {
 	btScalar cube_size = 12.0f;
 	CreateGameObject(new btSphereShape(1.0f), 10.0f, btVector3(1.0f, 0.0f, 0.0f), btVector3(0.0, 0.0, 0.0));
 
-	for (btScalar x_val = 0.0f; x_val < cube_size; x_val += 1.5f) {
-		for (btScalar y_val = 0.0f; y_val < cube_size; y_val += 1.5f) {
-			for (btScalar z_val = 0.0f; z_val < cube_size; z_val += 1.5f) {
+	btScalar x_val = 0.0f;
+	btScalar y_val = 0.0f;
+	btScalar z_val = 0.0f;
+
+	for (x_val = 0.0f; x_val < cube_size; x_val += 1.5f) {
+		for (y_val = 0.0f; y_val < cube_size; y_val += 1.5f) {
+			for (z_val = 0.0f; z_val < cube_size; z_val += 1.5f) {
 				// create a yellow sphere
 				CreateGameObject(new btSphereShape(1.0f), 10.0f, btVector3(0.7f, 0.7f, 0.0f), btVector3(x_val, y_val, z_val));
 			}
